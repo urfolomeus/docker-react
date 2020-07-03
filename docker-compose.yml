@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    stdin_open: true
+    volumes:
+      - /app/node_modules
+      - .:/app
+
+  # We can use the following to run our tests in a container
+  # when we run docker-compose up, however they will not be
+  # interactive. They will however re-run whenever we change
+  # the code.
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
