@@ -1,0 +1,11 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -f Dockerfile.dev -t urfolomeus/docker-react .
+
+script:
+  - docker run -e CI=true urfolomeus/docker-react npm test
