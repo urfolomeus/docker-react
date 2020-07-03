@@ -1,11 +1,51 @@
-# IMPORTANT
+# How to run
 
-**In order to run this in the container with live reload and files bound to the local machine run**
+## With docker-compose only
+
+Runs webserver and tests combined and will live reload both if changes are made. Note that tests do not run in an interactive mode.
+
+Add the following to the **docker_compose.yml** file:
+
+```docker
+tests:
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  stdin_open: true
+  volumes:
+    - /app/node_modules
+    - .:/app
+  command: ["npm", "run", "test"]
+```
+
+Run:
 
 ```
-docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app urfolomeus/frontent-dev
+docker-compose up
 ```
 
+## Webserver with docker-compose, tests run with docker exec
+
+Runs webserver with docker-compose. Then you can run the tests with docker exec.
+
+```
+# start the webserver container
+docker-compose up
+
+# run the tests
+docker exec -it <id or tag of container> npm run test
+```
+
+## To run without docker-compose
+
+The bypasses the need for docker-compose, should you wish to do this.
+
+```
+docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app <id or tag of image>
+```
+
+
+# Create React App README
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
